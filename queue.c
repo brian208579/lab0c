@@ -25,11 +25,14 @@ queue_t *q_new()
 {
     queue_t *q = malloc(sizeof(queue_t));
     /* What if malloc returned NULL? */
+
     if (q == NULL)  // 如果q=NULL，代表malloc失敗，故回傳fales
     {
         return NULL;
-    } else
+    } else {
         q->tail = NULL;
+    }
+
     q->head = NULL;
     q->size = 0;
     return q;
@@ -38,8 +41,10 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {
-    if (q == NULL)
+    if (q == NULL) {
         return;
+    }
+
     list_ele_t *t, *c;
     c = q->head;
     while (c != NULL) {
@@ -47,9 +52,9 @@ void q_free(queue_t *q)
         c = c->next;
         free(t);
     }
-    if (q != NULL)
+    if (q != NULL) {
         free(q);
-    // int ffff;
+    }
 }
 
 /*
@@ -62,21 +67,28 @@ void q_free(queue_t *q)
 bool q_insert_head(queue_t *q, char *s)
 {
     /* What should you do if the q is NULL? */
-    if (q == NULL)
+    if (q == NULL) {
         return false;
+    }
 
     list_ele_t *newh;
     newh = malloc(sizeof(list_ele_t));
 
     if (newh == NULL)  // 如果newh=NULL，代表malloc失敗，故回傳fales
+    {
         return false;
+    }
 
-    newh->value = strdup(s);
-    newh->next = q->head;  // q 的 next = 原本的 head
-    q->head = newh;        // newh = 新的 head
-    if (q->size == 0)      // 如果 q 裡面沒有 node
+    newh->value = strdup(s);  // new 的 value 為你輸入的值
+    newh->next = q->head;     // q 的 next = 原本的 head
+    q->head = newh;           // newh = 新的 head
+
+    if (q->size == 0)  // 如果 q 裡面沒有 node
+    {
         q->tail =
             newh;  // q 的 head 就等於 q 的 tail ( 此時的 newh = q 的 head )
+    }
+
     q->size += 1;  // 計算 q 裡面目前有幾個 node
     return true;
 
@@ -94,22 +106,26 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    if (q == NULL)
+    if (q == NULL) {
         return false;
-
+    }
     list_ele_t *newh;
     newh = malloc(sizeof(list_ele_t));
 
     if (newh == NULL)  // 如果newh=NULL，代表malloc失敗，故回傳fales
+    {
         return false;
-    newh->value = strdup(s);
-    newh->next = NULL;
+    }
+    newh->value = strdup(s);  // new 的 value 為你輸入的值
+    newh->next = NULL;  // 因是從 tail 開始加，故新增加的 newh 的 next 要為 NULL
 
-    if (q->size == 0)
-        q->head = newh;
-    else
-        q->tail->next = newh;
-    q->tail = newh;
+    if (q->size == 0)  // 如果 q 裡面沒有 node
+    {
+        q->head = newh;  // q 的 head 就為 newh
+    } else {
+        q->tail->next = newh;  // q 的 tail 的 next 指向 newh
+    }
+    q->tail = newh;  // newh 為新的 tail
     q->size += 1;
     return true;
 
@@ -129,12 +145,14 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
     /* You need to fix up this code. */
 
-    if (q == NULL || q->size == 0)
+    if (q == NULL || q->size == 0) {
         return false;
+    }
     list_ele_t *dummy;
     dummy = q->head;
-    if (sp == NULL)
+    if (sp == NULL) {
         return false;
+    }
     strncpy(sp, q->head->value, bufsize - 1);
     sp[bufsize - 1] = '\0';
     q->head = q->head->next;
@@ -151,8 +169,9 @@ int q_size(queue_t *q)
 {
     /* You need to write the code for this function */
     /* Remember: It should operate in O(1) time */
-    if (q == NULL)
+    if (q == NULL) {
         return 0;
+    }
     return q->size;
 }
 
@@ -166,8 +185,9 @@ int q_size(queue_t *q)
 void q_reverse(queue_t *q)
 {
     /* You need to write the code for this function */
-    if (q == NULL || q->size <= 1)
+    if (q == NULL || q->size <= 1) {
         return;
+    }
     list_ele_t *h;
     h = q->head;
     list_ele_t *t;
