@@ -49,6 +49,7 @@ void q_free(queue_t *q)
     }
     if (q != NULL)
         free(q);
+    // int ffff;
 }
 
 /*
